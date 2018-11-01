@@ -1,30 +1,11 @@
-import React from 'react';
-import { Platform } from 'react-native';
+import React from 'react';  // eslint-disable-line no-unused-vars
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 
 import TabBarIcon from '../components/TabBarIcon';
-import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
-import SettingsScreen from '../screens/SettingsScreen';
+import ActivityScreen from '../screens/ActivityScreen';
+import StatsScreen from '../screens/StatsScreen';
+import CalendarScreen from '../screens/CalendarScreen';
 import LogScreen from '../screens/LogScreen';
-
-const HomeStack = createStackNavigator({
-    Home: HomeScreen,
-});
-
-HomeStack.navigationOptions = {
-    tabBarLabel: 'Home',
-    tabBarIcon: ({ focused }) => (
-        <TabBarIcon
-            focused={focused}
-            name={
-                Platform.OS === 'ios'
-                    ? `ios-information-circle${focused ? '' : '-outline'}`
-                    : 'md-information-circle'
-            }
-        />
-    ),
-};
 
 const LogStack = createStackNavigator({
     Log: LogScreen,
@@ -35,44 +16,58 @@ LogStack.navigationOptions = {
     tabBarIcon: ({ focused }) => (
         <TabBarIcon
             focused={focused}
-            name='md-paper'
+            name="list-alt"
         />
     ),
 };
 
-const LinksStack = createStackNavigator({
-    Links: LinksScreen,
+
+const ActivityStack = createStackNavigator({
+    Activity: ActivityScreen,
 });
 
-LinksStack.navigationOptions = {
-    tabBarLabel: 'Links',
+ActivityStack.navigationOptions = {
+    tabBarLabel: 'Activities',
     tabBarIcon: ({ focused }) => (
         <TabBarIcon
             focused={focused}
-            name={
-                Platform.OS === 'ios' ? `ios-link${focused ? '' : '-outline'}` : 'md-link'}
+            name="bolt"
         />
     ),
 };
 
-const SettingsStack = createStackNavigator({
-    Settings: SettingsScreen,
+
+const StatsStack = createStackNavigator({
+    Stats: StatsScreen,
 });
 
-SettingsStack.navigationOptions = {
-    tabBarLabel: 'Settings',
+StatsStack.navigationOptions = {
+    tabBarLabel: 'Stats',
     tabBarIcon: ({ focused }) => (
         <TabBarIcon
             focused={focused}
-            name={
-                Platform.OS === 'ios' ? `ios-options${focused ? '' : '-outline'}` : 'md-options'}
+            name="bar-chart"
+        />
+    ),
+};
+
+const CalendarStack = createStackNavigator({
+    Calendar: CalendarScreen,
+});
+
+CalendarStack.navigationOptions = {
+    tabBarLabel: 'Calendar',
+    tabBarIcon: ({ focused }) => (
+        <TabBarIcon
+            focused={focused}
+            name="calendar"
         />
     ),
 };
 
 export default createBottomTabNavigator({
-    HomeStack,
     LogStack,
-    LinksStack,
-    SettingsStack,
+    ActivityStack,
+    StatsStack,
+    CalendarStack,
 });

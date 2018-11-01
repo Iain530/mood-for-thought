@@ -8,19 +8,21 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import baseStyles from '../styles/base';
 import { WebBrowser } from 'expo';
 
 import { MonoText } from '../components/StyledText';
 
-export default class HomeScreen extends React.Component {
+export default class ActivityScreen extends React.Component {
     static navigationOptions = {
-        header: null,
+        title: 'Activities',
     };
 
     render() {
         return (
-            <View style={styles.container}>
-                <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+            <View style={baseStyles.container}>
+                <ScrollView style={baseStyles.container} contentContainerStyle={styles.contentContainer}>
                     <View style={styles.welcomeContainer}>
                         <Image
                             source={
@@ -29,6 +31,11 @@ export default class HomeScreen extends React.Component {
                                     : require('../assets/images/robot-prod.png')
                             }
                             style={styles.welcomeImage}
+                        />
+                        <Icon
+                            name="rocket"
+                            size={30}
+                            color="#900"
                         />
                     </View>
 
@@ -99,10 +106,6 @@ export default class HomeScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-    },
     developmentModeText: {
         marginBottom: 20,
         color: 'rgba(0,0,0,0.4)',
