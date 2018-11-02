@@ -2,18 +2,19 @@ import React from 'react';
 import {
     StyleSheet,
     View,
+    FlatList,
 } from 'react-native';
 import DayView from './DayView';
 
 class DayList extends React.Component {
     render() {
-        let i = 0;
-        const daysList = this.props.days.map(day => (
-            <DayView key={i++} day={day} />
-        ));
         return (
             <View style={styles.daysListContainer}>
-                {daysList}
+                <FlatList
+                    data={this.props.days}
+                    renderItem={({item}) => <DayView day={item} />}
+                    keyExtractor = {(item) => item.date}
+                />
             </View>
         );
     }
