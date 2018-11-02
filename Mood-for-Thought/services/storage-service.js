@@ -59,10 +59,11 @@ const storageService = (prefix) => ({
             try {
                 const data = await AsyncStorage.multiGet(prefixedArray);
                 if (data !== null) {
-                    return data.map(kv => ({
-                        key: kv[0],
-                        val: JSON.parse(kv[1])
-                    }));
+                    const result = {};
+                    data.forEach(kv => {
+                        result[kv[0]] = JSON.parse(kv[1]);
+                    });
+                    return result;
                 }
             } catch (err) {
                 console.log(err); // eslint-disable-line no-console
@@ -80,7 +81,7 @@ const storageService = (prefix) => ({
         try {
             const allKeys = await AsyncStorage.getAllKeys();
             if (allKeys !== null) {
-                return allKeys.filter(key => key.startsWith(prefix));
+                return allKeys.filter(key => key.startsWith(prefix)).map(key => key.slice(prefix.length));
             }
         } catch (err) {
             console.log(err); // eslint-disable-line no-console
