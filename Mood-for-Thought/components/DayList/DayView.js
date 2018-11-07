@@ -37,7 +37,10 @@ class DayView extends React.Component {
         const logList = this.renderLogs(logs);
         return (
             <View style={styles.dayViewContainer}>
-                <View style={styles.dateContainer}>
+                <View style={[
+                    styles.dateContainer,
+                    baseStyles.horizontalContainer
+                ]}>
                     <Text style={styles.dateHeader}>{this.renderDate(date)}</Text>
                     <View style={baseStyles.horizontalContainer}>
                         <Text style={styles.dateSubHeader}>Steps: {steps} </Text>
@@ -58,7 +61,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     dateContainer: {
-        alignItems: 'center',
+        justifyContent: 'space-between',
         marginTop: 10,
         marginBottom: 5,
     },

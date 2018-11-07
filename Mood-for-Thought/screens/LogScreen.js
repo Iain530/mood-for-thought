@@ -35,7 +35,7 @@ export default class LogScreen extends React.Component {
     }
 
     async fetchDays() {
-        await createFakeData(5);
+        await createFakeData(30);
         const days = await getAllDays();
         days.sort((a, b) => new Date(b.date) - new Date(a.date));
         this.setState({

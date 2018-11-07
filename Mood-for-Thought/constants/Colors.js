@@ -1,6 +1,6 @@
 const tintColor = '#2f95dc';
 const headingTextColor = '#666';
-const basicCardColor = '#8acfbf';
+const basicCardColor = '#d9d9d9';
 const basicTextColorDark = '#444';
 const basicTextColorLight = '#eee';
 
