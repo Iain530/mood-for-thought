@@ -4,6 +4,7 @@ import {
     Text,
     Image,
     StyleSheet,
+    TouchableOpacity,
 } from 'react-native';
 import baseStyles from '../../styles/base';
 import { capitalise } from '../../utils/strings'
@@ -12,32 +13,39 @@ import Assets from '../../constants/Assets';
 
 
 class LogView extends React.Component {
+    openLog() {
+        const { navigate } = this.props.navigation;
+        navigate('LogEdit');
+    }
+
     render() {
         const { mood, activities, time } = this.props.log;
         return (
-            <View style={[
-                baseStyles.card,
-                baseStyles[mood],
-                baseStyles.horizontalContainer,
-                styles.row,
-            ]}>
-                <View style={baseStyles.horizontalContainer}>
-                    <Image
-                        source={Assets.MoodIcons[mood]}
-                        style={[
-                            baseStyles.moodIconLarge,
-                            {marginRight: 10,}
-                        ]}
-                    />
-                    <Text style={[
-                        baseStyles.text,
-                        {fontSize: 30}
-                    ]}>
-                        {capitalise(mood)}
-                    </Text>
+            <TouchableOpacity onPress={() => {}}>
+                <View style={[
+                    baseStyles.card,
+                    baseStyles[mood],
+                    baseStyles.horizontalContainer,
+                    styles.row,
+                ]}>
+                    <View style={baseStyles.horizontalContainer}>
+                        <Image
+                            source={Assets.MoodIcons[mood]}
+                            style={[
+                                baseStyles.moodIconLarge,
+                                {marginRight: 10,}
+                            ]}
+                        />
+                        <Text style={[
+                            baseStyles.text,
+                            {fontSize: 30}
+                        ]}>
+                            {capitalise(mood)}
+                        </Text>
+                    </View>
+                    <Text style={[baseStyles.text, styles.timeStamp]}>{format(time, 'HH:mm')}</Text>
                 </View>
-                <Text style={[baseStyles.text, styles.timeStamp]}>{format(time, 'HH:mm')}</Text>
-            </View>
+            </TouchableOpacity>
         );
     }
 }
