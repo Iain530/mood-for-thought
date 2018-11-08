@@ -1,13 +1,31 @@
 import register from './storage-service';
-import { createLog, createDay } from '../models';
+import { getLogs, newLog, saveLog } from './log-service';
+import {
+    createLog,
+    createDay
+} from '../models';
 import format from 'dateformat';
-import { shiftDate, atMidnight } from '../utils/dates';
+import {
+    shiftDate,
+    atMidnight,
+    sortByDate
+} from '../utils/dates';
 import Colors from '../constants/Colors';
 
 const DAY_PREFIX = 'Day';
 const DATE_KEY_FORMAT = 'dd/mm/yy';
 
 const storageService = register(DAY_PREFIX);
+
+
+const restoreDay = async (day) => {
+    if (day !== null) {
+        day.date = new Date(day.date);
+        day.logs = await getLogs(day.logs);
+    }
+    return day;
+};
+
 
 export const getOrCreate = async (date) => {
     const day = await getDay(date);
@@ -19,21 +37,35 @@ export const getOrCreate = async (date) => {
 
 export const getDay = async (date) => {
     const key = format(date, DATE_KEY_FORMAT);
-    return storageService.getData(key);
+    const day = await storageService.getData(key);
+    return restoreDay(day);
 };
 
 export const getDays = async (dates) => {
     const dateKeys = dates.map(date => format(date, DATE_KEY_FORMAT));
-    return storageService.getMultiData(dateKeys);
+    const loadingDays = Object.values(await storageService.getMultiData(dateKeys)).map(
+        day => restoreDay(day)
+    );
+    const days = await Promise.all(loadingDays);
+    days.sort(sortByDate);
+    return days;
 };
 
 export const getAllDays = async () => {
     const dayKeys = await storageService.getAllKeys();
-    return Object.values(await storageService.getMultiData(dayKeys));
+    const loadingDays = Object.values(await storageService.getMultiData(dayKeys)).map(
+        day => restoreDay(day)
+    );
+    const days = await Promise.all(loadingDays);
+    days.sort(sortByDate);
+    return days;
 };
 
 export const saveDay = async (day) => {
     const key = format(day.date, DATE_KEY_FORMAT);
+    day.logs = day.logs.map(log => (
+        log.id
+    ));
     return storageService.setData(key, day);
 };
 
@@ -51,20 +83,19 @@ export const createFakeData = async (days) => {
         const date = shiftDate(atMidnight(new Date()), -i);
         const day = await createDay(date);
         day.sleep.quality = Math.floor(Math.random() * 4);
-        const logs = createFakeLogs(date);
-        day.logs = logs;
         await saveDay(day);
+        await createFakeLogs(date);
     }
 };
 
 
 const emotions = Object.keys(Colors.MoodColors);
 
-const createFakeLogs = (date) => {
+const createFakeLogs = async (date) => {
     const numLogs = Math.ceil(Math.random() * 3);
-    const logs = [];
     for (let i = 0; i < numLogs; i++) {
-        logs.push(createLog(emotions[Math.floor(Math.random() * 5)], [], date));
+        const log = await newLog(date);
+        log.mood = emotions[Math.floor(Math.random() * 5)];
+        await saveLog(log);
     }
-    return logs;
 };

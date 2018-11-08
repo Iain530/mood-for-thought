@@ -2,6 +2,8 @@ import { StyleSheet } from 'react-native';
 import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
 
+export const light = mood => `${mood}Light`;
+
 const moods = Object.keys(Colors.MoodColors);
 const coloredMoods = {};
 moods.forEach(mood => {
@@ -14,15 +16,29 @@ export default StyleSheet.create({
     container: {
         flex: 1,
     },
+    sideMargin: {
+        marginLeft: Layout.sideMargin,
+        marginRight: Layout.sideMargin,
+    },
+    fullMargin: {
+        marginLeft: Layout.sideMargin,
+        marginRight: Layout.sideMargin,
+        marginTop: Layout.topBottomMargin,
+        marginBottom: Layout.topBottomMargin,
+    },
     text: {
         color: Colors.basicTextColorDark,
-        fontSize: 14,
+    },
+    largeText: {
+        color: Colors.largeTextColorDark,
     },
     textLight: {
         color: Colors.basicTextColorLight,
     },
+    center: {
+        alignItems: 'center',
+    },
     horizontalContainer: {
-        flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
     },
@@ -30,18 +46,28 @@ export default StyleSheet.create({
         paddingTop: 30,
     },
     card: {
-        flex: 1,
         padding: 10,
-        marginTop: 5,
-        marginLeft: Layout.sideMargin,
-        marginRight: Layout.sideMargin,
+        backgroundColor: Colors.basicCardColor,
+        borderRadius: Layout.borderRadius,
+    },
+    cardNoPad: {
         backgroundColor: Colors.basicCardColor,
         borderRadius: Layout.borderRadius,
     },
     moodIconLarge: {
         height: 40,
+        borderRadius: 20,
         width: 40,
-        opacity: 0.7,
+    },
+    moodIconExtraLarge: {
+        height: 50,
+        width: 50,
+    },
+    shadow: {
+        shadowColor: Colors.shadowColor,
+        shadowOffset: { height: 4, width: 0 },
+        shadowRadius: 3,
+        shadowOpacity: 0.75,
     },
     ...coloredMoods,
 });

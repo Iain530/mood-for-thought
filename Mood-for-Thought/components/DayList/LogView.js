@@ -1,49 +1,69 @@
 import React from 'react';
 import {
     View,
-    Text,
     Image,
     StyleSheet,
     TouchableOpacity,
 } from 'react-native';
+import { H1, H3 } from 'native-base';
+import { withNavigation } from 'react-navigation';
+import MoodIcon from '../MoodIcon';
 import baseStyles from '../../styles/base';
-import { capitalise } from '../../utils/strings'
+import { capitalise } from '../../utils/strings';
 import format from 'dateformat';
-import Assets from '../../constants/Assets';
+import { getLog } from '../../services/log-service';
 
 
 class LogView extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            log: this.props.log,
+        };
+    }
+
     openLog() {
         const { navigate } = this.props.navigation;
-        navigate('LogEdit');
+        return navigate('EditLog', {
+            log: this.props.log,
+            refresh: this.refresh,
+        });
+    }
+
+    refresh = async () => {
+        const id = this.state.log.id;
+        const log = await getLog(id);
+        this.setState({ log });
     }
 
     render() {
-        const { mood, activities, time } = this.props.log;
+        const { mood, activities, time } = this.state.log;
         return (
-            <TouchableOpacity onPress={() => {}}>
+            <TouchableOpacity onPress={() => this.openLog()}>
                 <View style={[
                     baseStyles.card,
+                    baseStyles.sideMargin,
                     baseStyles[mood],
                     baseStyles.horizontalContainer,
-                    styles.row,
+                    styles.logView,
                 ]}>
                     <View style={baseStyles.horizontalContainer}>
-                        <Image
-                            source={Assets.MoodIcons[mood]}
-                            style={[
-                                baseStyles.moodIconLarge,
-                                {marginRight: 10,}
-                            ]}
-                        />
-                        <Text style={[
-                            baseStyles.text,
-                            {fontSize: 30}
+                        <View style={{ marginRight: 10 }}>
+                            <MoodIcon
+                                mood={mood}
+                                size="large"
+
+                            />
+                        </View>
+                        <H1 style={[
+                            baseStyles.largeText,
                         ]}>
                             {capitalise(mood)}
-                        </Text>
+                        </H1>
                     </View>
-                    <Text style={[baseStyles.text, styles.timeStamp]}>{format(time, 'HH:mm')}</Text>
+                    <H3 style={[baseStyles.largeText, styles.timeStamp]}>
+                        {format(time, 'HH:mm')}
+                    </H3>
                 </View>
             </TouchableOpacity>
         );
@@ -51,13 +71,17 @@ class LogView extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    row: {
+    logView: {
         justifyContent: 'space-between',
+        marginTop: 5,
     },
     timeStamp: {
-        fontSize: 30,
+
+    },
+    cardIcon: {
+        marginRight: 10,
     }
 });
 
 
-export default LogView;
+export default withNavigation(LogView);

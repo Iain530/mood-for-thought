@@ -1,6 +1,6 @@
-const createLog = (mood, activities, time) => ({
-    mood,
-    activities,
+const createLog = (time) => ({
+    mood: null,
+    activities: [],
     time,
 });
 

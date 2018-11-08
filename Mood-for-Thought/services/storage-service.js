@@ -77,7 +77,6 @@ const storageService = (prefix) => ({
     Get an array containing all keys with your prefix
     */
     async getAllKeys() {
-
         try {
             const allKeys = await AsyncStorage.getAllKeys();
             if (allKeys !== null) {
