@@ -2,7 +2,6 @@ import { Permissions } from 'expo';
 
 export const REQUIRED = [
     Permissions.NOTIFICATIONS,
-    Permissions.CAMERA
 ];
 
 export const checkAndAskForAllPermissions = async () => {
