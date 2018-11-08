@@ -44,18 +44,6 @@ export default class LogScreen extends React.Component {
         });
     }
 
-    renderDayList() {
-        if (this.state.days) {
-            return this.state.days.map(day => (
-                <Text key={day} style={styles.getStartedText}>{JSON.stringify(day)}</Text>
-            ));
-        }
-        if (this.state.loading) {
-            return <Text>Loading...</Text>;
-        }
-        return <Text>No logs :(</Text>;
-    }
-
     render() {
         return (
             <View style={baseStyles.container}>

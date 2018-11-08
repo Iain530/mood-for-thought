@@ -14,10 +14,8 @@ const getStepsForDate = async (date) => {
     if (await isPedometerAvailable()) {
         const start = atMidnight(date);
         const end = shiftDate(start, 1);
-        console.log(start, end);
         const result = await Pedometer.getStepCountAsync(start, end);
         if (result) {
-            console.log(result);
             return result.steps;
         }
     }
