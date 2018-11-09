@@ -1,2 +1,4 @@
 node_modules/**/*
 .expo/**/*
+metro-cache-*
+haste-map-metro-*
