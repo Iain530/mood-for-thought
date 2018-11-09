@@ -32,13 +32,13 @@ export default class StatsScreen extends React.Component {
         await Expo.Permissions.askAsync(Expo.Permissions.NOTIFICATIONS);
         Expo.Notifications.addListener(() => alert('Received a notification (sorry)'));
         Expo.Notifications.cancelAllScheduledNotificationsAsync();
-        Expo.Notifications.scheduleLocalNotificationAsync({
-            title: 'Hello there',
-            body: 'General kenobi',
-        }, {
-            time: (new Date()).getTime() + 1000,
-            repeat: 'minute'
-        });
+        // Expo.Notifications.scheduleLocalNotificationAsync({
+        //     title: 'Hello there',
+        //     body: 'General kenobi',
+        // }, {
+        //     time: (new Date()).getTime() + 1000,
+        //     repeat: 'minute'
+        // });
         this.checkPedometer();
     }
 

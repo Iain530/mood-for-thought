@@ -2,10 +2,9 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    Text,
-    FlatList,
 } from 'react-native';
 import format from 'dateformat';
+import { H2, Text } from 'native-base';
 import baseStyles from '../../styles/base';
 import Colors from '../../constants/Colors';
 import {
@@ -17,9 +16,8 @@ import LogView from './LogView';
 
 class DayView extends React.Component {
     renderLogs(logs) {
-        let i = 0;
         return logs.map(log => (
-            <LogView key={i++} log={log} />
+            <LogView key={log.id} log={log} />
         ));
     }
 
@@ -38,14 +36,15 @@ class DayView extends React.Component {
         return (
             <View style={styles.dayViewContainer}>
                 <View style={[
+                    baseStyles.horizontalContainer,
+                    baseStyles.sideMargin,
                     styles.dateContainer,
-                    baseStyles.horizontalContainer
                 ]}>
-                    <Text style={styles.dateHeader}>{this.renderDate(date)}</Text>
-                    <View style={baseStyles.horizontalContainer}>
+                    <H2 style={styles.dateHeader}>{this.renderDate(date)}</H2>
+                    <View>
                         <Text style={styles.dateSubHeader}>Steps: {steps} </Text>
                         { sleep ?
-                            <Text  style={styles.dateSubHeader}>Sleep: {sleep.quality}</Text> :
+                            <Text style={styles.dateSubHeader}>Sleep: {sleep.quality}</Text> :
                             null
                         }
                     </View>
@@ -58,7 +57,7 @@ class DayView extends React.Component {
 
 const styles = StyleSheet.create({
     dayViewContainer: {
-        marginBottom: 10,
+        marginBottom: 20,
     },
     dateContainer: {
         justifyContent: 'space-between',
@@ -67,11 +66,9 @@ const styles = StyleSheet.create({
     },
     dateHeader: {
         color: Colors.headingTextColor,
-        fontSize: 22,
     },
     dateSubHeader: {
         color: Colors.headingTextColor,
-        fontSize: 18,
     },
 });
 

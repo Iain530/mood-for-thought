@@ -1,7 +1,7 @@
-const createLog = (mood, activities, time) => ({
+const createLog = (time, mood = null) => ({
     mood,
-    activities,
     time,
+    activities: [],
 });
 
 export default createLog;

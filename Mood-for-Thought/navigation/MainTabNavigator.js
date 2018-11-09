@@ -6,9 +6,11 @@ import ActivityScreen from '../screens/ActivityScreen';
 import StatsScreen from '../screens/StatsScreen';
 import CalendarScreen from '../screens/CalendarScreen';
 import LogScreen from '../screens/LogScreen';
+import EditLogScreen from '../screens/EditLogScreen';
 
 const LogStack = createStackNavigator({
     Log: LogScreen,
+    EditLog: EditLogScreen,
 });
 
 LogStack.navigationOptions = {

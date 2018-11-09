@@ -13,7 +13,7 @@ class DayList extends React.Component {
                 <FlatList
                     data={this.props.days}
                     renderItem={({item}) => <DayView day={item} />}
-                    keyExtractor = {(item) => item.date}
+                    keyExtractor = {(item) => item.date.toString()}
                 />
             </View>
         );
