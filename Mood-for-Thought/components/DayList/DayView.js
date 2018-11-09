@@ -16,9 +16,8 @@ import LogView from './LogView';
 
 class DayView extends React.Component {
     renderLogs(logs) {
-        let i = 0;
         return logs.map(log => (
-            <LogView key={i++} log={log} />
+            <LogView key={log.id} log={log} />
         ));
     }
 

@@ -5,10 +5,11 @@ const basicTextColorDark = '#444';
 const largeTextColorDark = '#333';
 const basicTextColorLight = '#eee';
 const shadowColor = '#555';
+const floatingButtonColor = '#626262';
 
 const MoodColors = {
     angry: '#d9664b',
-    joyful: '#e2c475',
+    joyful: '#e3d680',
     content: '#73b877',
     sad: '#6ea8c8',
     meh: '#bd87dd',
@@ -18,6 +19,7 @@ export default {
     basicTextColorDark,
     basicTextColorLight,
     largeTextColorDark,
+    floatingButtonColor,
     MoodColors,
     tintColor,
     headingTextColor,

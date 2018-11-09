@@ -25,13 +25,23 @@ export const saveLog = async (log) => {
     return storageService.setData(log.id, log);
 };
 
-export const newLog = async (time) => {
+export const newLog = async (time, mood) => {
     const id = await storageService.getNextId();
     const log = {
         id,
-        ...createLog(time),
+        ...createLog(time, mood),
     };
     return log;
+};
+
+export const deleteLog = async (log) => {
+    const day = await getOrCreate(log.time);
+    if (day !== null) {
+        const index = day.logs.map(saved => saved.id).indexOf(log.id);
+        day.logs.splice(index, 1);
+        await saveDay(day);
+    }
+    return storageService.removeData(log.id);
 };
 
 export const getLogs = async (ids) => {

@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
 
@@ -25,6 +25,9 @@ export default StyleSheet.create({
         marginRight: Layout.sideMargin,
         marginTop: Layout.topBottomMargin,
         marginBottom: Layout.topBottomMargin,
+    },
+    headerText: {
+        color: Colors.headingTextColor,
     },
     text: {
         color: Colors.basicTextColorDark,
@@ -54,20 +57,13 @@ export default StyleSheet.create({
         backgroundColor: Colors.basicCardColor,
         borderRadius: Layout.borderRadius,
     },
-    moodIconLarge: {
-        height: 40,
-        borderRadius: 20,
-        width: 40,
-    },
-    moodIconExtraLarge: {
-        height: 50,
-        width: 50,
-    },
-    shadow: {
+    shadow: Platform.OS === 'ios' ? {
         shadowColor: Colors.shadowColor,
         shadowOffset: { height: 4, width: 0 },
         shadowRadius: 3,
         shadowOpacity: 0.75,
+    } : {
+        elevation: 4,
     },
     ...coloredMoods,
 });

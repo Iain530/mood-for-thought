@@ -8,6 +8,7 @@ import {
     View,
 } from 'react-native';
 import { H1, H2, H3, Text } from 'native-base';
+import MoodIcon from '../MoodIcon';
 import baseStyles from '../../styles/base';
 import { saveLog } from '../../services/log-service';
 import { capitalise } from '../../utils/strings';
@@ -26,18 +27,12 @@ class MoodSelector extends React.Component {
             >
                 <View style={[
                     baseStyles.center,
-
-                    styles.moodOption,
                 ]}>
-                    <Image
-                        source={Assets.MoodIcons[mood]}
-                        style={[
-                            baseStyles.moodIconExtraLarge,
-                            baseStyles[mood],
-                            styles.moodIcon,
-                        ]}
+                    <MoodIcon
+                        mood={mood}
+                        size="extraLarge"
                     />
-                    <H3 style={baseStyles.text}>{capitalise(mood)}</H3>
+                    <H3 style={[baseStyles.text, styles.moodName]}>{capitalise(mood)}</H3>
                 </View>
             </TouchableOpacity>
         ));
@@ -60,15 +55,8 @@ const styles = StyleSheet.create({
     moodSelector: {
         justifyContent: 'space-around',
     },
-    moodOption: {
-        width: 72,
-        paddingTop: 3,
-        borderRadius: 20,
-        paddingBottom: 2,
-    },
-    moodIcon: {
-        borderRadius: 25,
-        marginBottom: 4,
+    moodName: {
+        marginTop: 5,
     },
 });
 

@@ -1,5 +1,6 @@
 import register from './storage-service';
 import { getLogs, newLog, saveLog } from './log-service';
+import stepService from './step-service';
 import {
     createLog,
     createDay
@@ -8,7 +9,8 @@ import format from 'dateformat';
 import {
     shiftDate,
     atMidnight,
-    sortByDate
+    sortByDate,
+    isToday,
 } from '../utils/dates';
 import Colors from '../constants/Colors';
 
@@ -47,7 +49,7 @@ export const getDays = async (dates) => {
         day => restoreDay(day)
     );
     const days = await Promise.all(loadingDays);
-    days.sort(sortByDate);
+    days.sort(sortByDate('date'));
     return days;
 };
 
@@ -57,15 +59,20 @@ export const getAllDays = async () => {
         day => restoreDay(day)
     );
     const days = await Promise.all(loadingDays);
-    days.sort(sortByDate);
+    days.sort(sortByDate('date'));
     return days;
 };
 
 export const saveDay = async (day) => {
     const key = format(day.date, DATE_KEY_FORMAT);
+    day.logs.sort(sortByDate('time', true))
     day.logs = day.logs.map(log => (
         log.id
     ));
+    const steps = await stepService.getStepsForDate(day.date);
+    if (steps > day.steps) {
+        day.steps = steps;
+    }
     return storageService.setData(key, day);
 };
 
@@ -73,8 +80,6 @@ export const removeDay = async (date) => {
     const key = format(date, DATE_KEY_FORMAT);
     return storageService.removeData(key);
 };
-
-
 
 
 

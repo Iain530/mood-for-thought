@@ -1,7 +1,6 @@
 import React from 'react';
 import {
     View,
-    Image,
     StyleSheet,
     TouchableOpacity,
 } from 'react-native';
@@ -52,7 +51,6 @@ class LogView extends React.Component {
                             <MoodIcon
                                 mood={mood}
                                 size="large"
-
                             />
                         </View>
                         <H1 style={[
@@ -62,7 +60,7 @@ class LogView extends React.Component {
                         </H1>
                     </View>
                     <H3 style={[baseStyles.largeText, styles.timeStamp]}>
-                        {format(time, 'HH:mm')}
+                        {format(time, 'HH:MM')}
                     </H3>
                 </View>
             </TouchableOpacity>
