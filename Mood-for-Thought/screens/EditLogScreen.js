@@ -7,13 +7,17 @@ import { withNavigation } from 'react-navigation';
 import { H1, H2, H3, Text } from 'native-base';
 import format from 'dateformat';
 import MoodSelector from '../components/MoodSelector';
+import ActivitySelector from '../components/ActivitySelector';
 import baseStyles from '../styles/base';
 import { saveLog } from '../services/log-service';
 import {
     isToday,
     isYesterday,
+    withinMinutes,
+    formatDateTimeHeader,
 } from '../utils/dates';
 import Activities from '../constants/Activities';
+import Layout from '../constants/Layout';
 
 
 class EditLogScreen extends React.Component {
@@ -61,39 +65,56 @@ class EditLogScreen extends React.Component {
     }
 
     askMoodString(time) {
-        if (isToday(time)) {
-            return `How were you feeling on ${format(time, 'dddd, dS mmmm yyyy')} at ${format(time, 'HH:MM')}?`;
+        if (withinMinutes(time, 10)) {
+            return 'How are you feeling right now?';
+        } else if (isToday(time)) {
+            return 'How were you feeling today at this time?';
         } else if (isYesterday(time)) {
-            return format(time, 'How were you feeling on ?');
+            return 'How were you feeling yesterday at this time?';
         }
-        return format(time, 'How were you feeling on ?');
+        return 'How were you feeling at this time?';
+    }
+
+    askActivitiesString(time) {
+        return withinMinutes(time, 10) ? 'What are you doing?' : 'What were you doing?';
     }
 
     renderLog(log) {
         if (log !== null) {
             const { mood, activities, time } = log;
             return (
-                <View
-                    style={[
+                <View style={baseStyles.container}>
+                    <H3 style={[styles.formHeader, baseStyles.dateHeader]}>
+                        {formatDateTimeHeader(time)}
+                    </H3>
+                    <View style={[
+                        styles.logCard,
+                        styles.sectionContainer,
                         baseStyles.card,
-                        baseStyles.container,
                         baseStyles[mood],
-                        baseStyles.fullMargin,
-                    ]}
-                >
-                    <View style={styles.sectionContainer}>
-                        <H2 style={[baseStyles.text, styles.formHeader]}>
+                        baseStyles.largeSideMargin,
+                    ]}>
+                        <H3 style={[baseStyles.text, baseStyles.sideMargin, styles.cardHeader]}>
                             {this.askMoodString(time)}
-                        </H2>
+                        </H3>
                         <MoodSelector
                             selected={mood}
                             onPress={(mood) => this.saveLog({ mood })}
                         />
                     </View>
-                    <View style={styles.sectionContainer}>
-                        <H2 style={[baseStyles.text, styles.formHeader]}>
-                            What were you up to?
-                        </H2>
+                    <H3 style={[baseStyles.dateHeader, styles.formHeader]}>
+                        {this.askActivitiesString(time)}
+                    </H3>
+                    <View style={[
+                        styles.logCard,
+                        styles.sectionContainer,
+                        baseStyles.card,
+                        baseStyles.largeSideMargin,
+                    ]}>
+                        <ActivitySelector
+                            selected={activities}
+                            onPress={() => {}}
+                        />
                     </View>
                 </View>
             );
@@ -110,10 +131,20 @@ class EditLogScreen extends React.Component {
 
 const styles = StyleSheet.create({
     sectionContainer: {
-        paddingBottom: 20,
+        paddingBottom: 10,
+        marginBottom: 10,
+    },
+    logCard: {
+        marginTop: 5,
     },
     formHeader: {
-        paddingBottom: 10,
+        marginLeft: Layout.sideMargin * 3 + 10,
+        marginRight: Layout.sideMargin * 3 + 10,
+        marginBottom: 10,
+        marginTop: 10,
+    },
+    cardHeader: {
+        marginBottom: 15,
     },
 });
 

@@ -20,9 +20,19 @@ export default StyleSheet.create({
         marginLeft: Layout.sideMargin,
         marginRight: Layout.sideMargin,
     },
+    largeSideMargin: {
+        marginLeft: Layout.sideMargin * 2,
+        marginRight: Layout.sideMargin * 2,
+    },
     fullMargin: {
         marginLeft: Layout.sideMargin,
         marginRight: Layout.sideMargin,
+        marginTop: Layout.topBottomMargin,
+        marginBottom: Layout.topBottomMargin,
+    },
+    largeFullMargin: {
+        marginLeft: Layout.sideMargin * 2,
+        marginRight: Layout.sideMargin * 2,
         marginTop: Layout.topBottomMargin,
         marginBottom: Layout.topBottomMargin,
     },
@@ -47,6 +57,17 @@ export default StyleSheet.create({
     },
     contentContainer: {
         paddingTop: 30,
+    },
+    dateContainer: {
+        justifyContent: 'space-between',
+        marginTop: 10,
+        marginBottom: 5,
+    },
+    dateHeader: {
+        color: Colors.headingTextColor,
+    },
+    dateSubHeader: {
+        color: Colors.headingTextColor,
     },
     card: {
         padding: 10,

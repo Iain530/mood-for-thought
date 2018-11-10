@@ -32,7 +32,7 @@ class MoodSelector extends React.Component {
                         mood={mood}
                         size="extraLarge"
                     />
-                    <H3 style={[baseStyles.text, styles.moodName]}>{capitalise(mood)}</H3>
+                    <Text style={[baseStyles.text, styles.moodName]}>{capitalise(mood)}</Text>
                 </View>
             </TouchableOpacity>
         ));

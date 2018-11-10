@@ -6,7 +6,7 @@ import {
     AsyncStorage,
 } from 'react-native';
 import { FloatingAction } from 'react-native-floating-action';
-import { H3 } from 'native-base';
+import { H3, Text } from 'native-base';
 import {
     createFakeData,
     getAllDays,
@@ -49,10 +49,8 @@ export default class LogScreen extends React.Component {
     }
 
     fetchAllDays = async () => {
-
-
-        AsyncStorage.clear();
-        // await createFakeData(5);
+        // AsyncStorage.clear();
+        // await createFakeData(3);
 
 
         const days = await getAllDays();
@@ -88,7 +86,7 @@ export default class LogScreen extends React.Component {
                     baseStyles[mood],
                     baseStyles.sideMargin,
                 ]}>
-                    <H3 style={baseStyles.text}>{capitalise(mood)}</H3>
+                    <Text style={baseStyles.largeText}>{capitalise(mood)}</Text>
                 </View>
                 <View>
                     <MoodIcon

@@ -8,8 +8,7 @@ import { H2, Text } from 'native-base';
 import baseStyles from '../../styles/base';
 import Colors from '../../constants/Colors';
 import {
-    isToday,
-    isYesterday,
+    formatDateHeader,
 } from '../../utils/dates';
 import LogView from './LogView';
 
@@ -21,15 +20,6 @@ class DayView extends React.Component {
         ));
     }
 
-    renderDate(date) {
-        if (isToday(date)) {
-            return 'Today';
-        } else if (isYesterday(date)) {
-            return 'Yesterday';
-        }
-        return format(date, 'dddd, dS mmmm yyyy');
-    }
-
     render() {
         const { logs, steps, sleep, date } = this.props.day;
         const logList = this.renderLogs(logs);
@@ -37,14 +27,14 @@ class DayView extends React.Component {
             <View style={styles.dayViewContainer}>
                 <View style={[
                     baseStyles.horizontalContainer,
-                    baseStyles.sideMargin,
-                    styles.dateContainer,
+                    baseStyles.largeSideMargin,
+                    baseStyles.dateContainer,
                 ]}>
-                    <H2 style={styles.dateHeader}>{this.renderDate(date)}</H2>
+                    <H2 style={baseStyles.dateHeader}>{formatDateHeader(date)}</H2>
                     <View>
-                        <Text style={styles.dateSubHeader}>Steps: {steps} </Text>
+                        <Text style={baseStyles.dateSubHeader}>Steps: {steps} </Text>
                         { sleep ?
-                            <Text style={styles.dateSubHeader}>Sleep: {sleep.quality}</Text> :
+                            <Text style={baseStyles.dateSubHeader}>Sleep: {sleep.quality}</Text> :
                             null
                         }
                     </View>
@@ -58,17 +48,6 @@ class DayView extends React.Component {
 const styles = StyleSheet.create({
     dayViewContainer: {
         marginBottom: 20,
-    },
-    dateContainer: {
-        justifyContent: 'space-between',
-        marginTop: 10,
-        marginBottom: 5,
-    },
-    dateHeader: {
-        color: Colors.headingTextColor,
-    },
-    dateSubHeader: {
-        color: Colors.headingTextColor,
     },
 });
 
