@@ -1,4 +1,4 @@
-const tintColor = '#2f95dc';
+const tintColor = '#404040';
 const backgroundColor = '#eee';
 
 const headingTextColor = '#666';

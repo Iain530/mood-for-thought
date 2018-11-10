@@ -72,4 +72,8 @@ export default createBottomTabNavigator({
     ActivityStack,
     StatsStack,
     CalendarStack,
+}, {
+    tabBarOptions: {
+        showLabel: false,
+    }
 });
