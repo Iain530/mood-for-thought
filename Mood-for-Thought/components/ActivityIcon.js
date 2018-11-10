@@ -1,11 +1,9 @@
 import React from 'react';
 import {
-    Image,
     StyleSheet,
     View,
 } from 'react-native';
 import baseStyles from '../styles/base';
-import Assets from '../constants/Assets';
 import Colors from '../constants/Colors';
 import { FontAwesome } from '@expo/vector-icons';
 
@@ -13,18 +11,20 @@ const SIZES = {
     extraLarge: 40,
     large: 30,
     small: 25,
+    extraSmall: 15,
 };
 
-class MoodSelector extends React.Component {
+class ActivityIcon extends React.Component {
     render() {
-        const { size, shadow } = this.props;
+        const { size, shadow, icon, color } = this.props;
         return (
-            <View style={[
+            <View key={icon} style={[
                 styles[size],
                 baseStyles.center,
+                styles.center,
                 shadow ? baseStyles.shadow : null,
             ]}>
-                <FontAwesome name={this.props.icon} size={SIZES[size]} color={this.props.color} />
+                <FontAwesome key={icon} name={icon} size={SIZES[size]} color={color ? color : Colors.basicTextColorDark} />
             </View>
         );
     }
@@ -36,6 +36,9 @@ const styles = StyleSheet.create({
         height: 50,
         width: 50,
     },
+    center: {
+        justifyContent: 'center',
+    },
     large: {
         height: 40,
         width: 40,
@@ -44,6 +47,10 @@ const styles = StyleSheet.create({
         height: 32,
         width: 32,
     },
+    extraSmall: {
+        height: 20,
+        width: 20,
+    },
 });
 
-export default MoodSelector;
+export default ActivityIcon;

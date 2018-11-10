@@ -84,7 +84,7 @@ export const removeDay = async (date) => {
 
 
 export const createFakeData = async (days) => {
-    for (let i = 0; i < days; i++) {
+    for (let i = 1; i < days; i++) {
         const date = shiftDate(atMidnight(new Date()), -i);
         const day = await createDay(date);
         day.sleep.quality = Math.floor(Math.random() * 4);

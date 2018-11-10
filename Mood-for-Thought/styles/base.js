@@ -15,6 +15,7 @@ moods.forEach(mood => {
 export default StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: Colors.backgroundColor,
     },
     sideMargin: {
         marginLeft: Layout.sideMargin,
@@ -23,6 +24,9 @@ export default StyleSheet.create({
     largeSideMargin: {
         marginLeft: Layout.sideMargin * 2,
         marginRight: Layout.sideMargin * 2,
+    },
+    largeSideMarginLeft: {
+        marginLeft: Layout.sideMargin * 2,
     },
     fullMargin: {
         marginLeft: Layout.sideMargin,
@@ -38,6 +42,16 @@ export default StyleSheet.create({
     },
     headerText: {
         color: Colors.headingTextColor,
+    },
+    italic: {
+        fontStyle: 'italic',
+    },
+    lightText: {
+        color: Colors.lighterTextColorDark,
+    },
+    smallText: {
+        color: Colors.basicTextColorDark,
+        fontSize: 12,
     },
     text: {
         color: Colors.basicTextColorDark,

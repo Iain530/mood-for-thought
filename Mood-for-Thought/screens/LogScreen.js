@@ -18,6 +18,7 @@ import {
 } from '../services/log-service';
 import {
     now,
+    sortByDate,
 } from '../utils/dates';
 import format from 'dateformat';
 import DayList from '../components/DayList';
@@ -108,12 +109,13 @@ export default class LogScreen extends React.Component {
         }));
 
         const days = Object.values(this.state.days);
+        days.sort(sortByDate('date'));
 
         return (
             <View style={baseStyles.container}>
                 <ScrollView style={baseStyles.container} contentContainerStyle={styles.contentContainer}>
                     <View>
-                        <DayList days={days} />
+                        <DayList days={days} fetchDay={this.fetchDay}/>
                     </View>
                 </ScrollView>
                 <FloatingAction

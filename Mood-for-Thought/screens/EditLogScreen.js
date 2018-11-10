@@ -64,6 +64,17 @@ class EditLogScreen extends React.Component {
         refresh();
     }
 
+    toggleActivity = (name) => {
+        const { activities } = this.state.log;
+        const index = activities.indexOf(name);
+        if (index >= 0) {
+            activities.splice(index, 1);
+        } else {
+            activities.push(name);
+        }
+        this.saveLog({ activities });
+    }
+
     askMoodString(time) {
         if (withinMinutes(time, 10)) {
             return 'How are you feeling right now?';
@@ -113,7 +124,7 @@ class EditLogScreen extends React.Component {
                     ]}>
                         <ActivitySelector
                             selected={activities}
-                            onPress={() => {}}
+                            onPress={this.toggleActivity}
                         />
                     </View>
                 </View>

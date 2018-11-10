@@ -4,9 +4,13 @@ import {
     StyleSheet,
     TouchableOpacity,
 } from 'react-native';
-import { H1, H3 } from 'native-base';
+import { H1, H3, Text } from 'native-base';
 import { withNavigation } from 'react-navigation';
 import MoodIcon from '../MoodIcon';
+import ActivityIcon from '../ActivityIcon';
+import Layout from '../../constants/Layout';
+import Colors from '../../constants/Colors';
+import { getActivityByName } from '../../constants/Activities';
 import baseStyles from '../../styles/base';
 import { capitalise } from '../../utils/strings';
 import format from 'dateformat';
@@ -24,7 +28,7 @@ class LogView extends React.Component {
     openLog() {
         const { navigate } = this.props.navigation;
         return navigate('EditLog', {
-            log: this.props.log,
+            log: this.state.log,
             refresh: this.refresh,
         });
     }
@@ -34,6 +38,32 @@ class LogView extends React.Component {
         const log = await getLog(id);
         this.setState({ log });
     }
+
+    renderActivities(activities) {
+        if (activities.length > 0) {
+            return activities.map((name) => {
+                const { icon } = getActivityByName(name);
+                return (
+                    <View key={name} style={styles.activityListItem}>
+                        <ActivityIcon
+                            icon={icon}
+                            size="extraSmall"
+                            color={Colors.basicTextColorDark}
+                        />
+                    </View>
+                );
+            });
+        }
+        return (
+            <Text style={[
+                baseStyles.lightText,
+                baseStyles.italic,
+            ]}>
+                No activity data
+            </Text>
+        );
+    }
+
 
     render() {
         const { mood, activities, time } = this.state.log;
@@ -53,15 +83,23 @@ class LogView extends React.Component {
                                 size="large"
                             />
                         </View>
-                        <H1 style={[
-                            baseStyles.largeText,
-                        ]}>
-                            {capitalise(mood)}
-                        </H1>
+                        <View style={styles.logSummary}>
+                            <H3 style={[
+                                baseStyles.largeText,
+                            ]}>
+                                {capitalise(mood)}
+                            </H3>
+                            <View style={[
+                                baseStyles.horizontalContainer,
+                                styles.activityList,
+                            ]}>
+                                {this.renderActivities(activities)}
+                            </View>
+                        </View>
                     </View>
-                    <H3 style={[baseStyles.largeText, styles.timeStamp]}>
+                    <Text style={[baseStyles.largeText, styles.timeStamp]}>
                         {format(time, 'HH:MM')}
-                    </H3>
+                    </Text>
                 </View>
             </TouchableOpacity>
         );
@@ -71,14 +109,26 @@ class LogView extends React.Component {
 const styles = StyleSheet.create({
     logView: {
         justifyContent: 'space-between',
-        marginTop: 5,
+        marginTop: 3,
+        marginBottom: 3,
+        marginRight: - Layout.sideMargin,
     },
     timeStamp: {
-
+        alignSelf: 'flex-start',
+    },
+    logSummary: {
+        alignSelf: 'flex-start',
+        justifyContent: 'space-between',
     },
     cardIcon: {
         marginRight: 10,
-    }
+    },
+    activityList: {
+        marginTop: 3,
+    },
+    activityListItem: {
+        padding: 2,
+    },
 });
 
 

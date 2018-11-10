@@ -16,13 +16,11 @@ import ActivityIcon from '../ActivityIcon';
 
 class ActivitySelector extends React.Component {
     renderActivities() {
-
         const { selected } = this.props;
 
-        // const selected = ['Mobile', 'Shopping'];
-
-        return Activities.map(({ name, icon }) => {
-            const color = selected.includes(name) ? 'orange' : Colors.basicTextColorDark;
+        return Activities.map(({ name, icon, displayName }) => {
+            const isSelected = selected.includes(name);
+            const color = isSelected ? Colors.activitySelectedHighlight : Colors.basicTextColorDark;
             return (
                 <TouchableOpacity
                     onPress={() => this.props.onPress(name)}
@@ -31,9 +29,13 @@ class ActivitySelector extends React.Component {
                     <View style={[
                         baseStyles.center,
                         styles.activitySelector,
+                        isSelected ? styles.selectedActivity : { borderColor: Colors.largeTextColorDark },
                     ]}>
                         <ActivityIcon icon={icon} size="small" color={color} />
-                        <Text style={[baseStyles.text, styles.activityName]}>{capitalise(name)}</Text>
+                        <Text style={[
+                            isSelected ? styles.selectedActivityName : baseStyles.text,
+                            styles.activityName
+                        ]}>{displayName ? capitalise(displayName) : capitalise(name)}</Text>
                     </View>
                 </TouchableOpacity>
             );
@@ -61,13 +63,19 @@ const styles = StyleSheet.create({
         width: 76,
         padding: 8,
         margin: 5,
-        borderColor: Colors.largeTextColorDark,
         borderWidth: 1,
         borderRadius: Layout.borderRadiusSmall,
     },
     activityName: {
         marginTop: 0,
         fontSize: 13,
+    },
+    selectedActivity: {
+        borderColor: Colors.activitySelectedHighlight,
+        backgroundColor: Colors.activitySelectedColor,
+    },
+    selectedActivityName: {
+        color: Colors.activitySelectedHighlight,
     },
 });
 
