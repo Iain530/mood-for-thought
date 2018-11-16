@@ -2,32 +2,64 @@ import React from 'react';
 import {
     StyleSheet,
     View,
+    Alert,
 } from 'react-native';
-import format from 'dateformat';
-import { H2, Text } from 'native-base';
+import { H2, Text, SwipeRow, Button, Icon } from 'native-base';
 import baseStyles from '../../styles/base';
 import Colors from '../../constants/Colors';
 import {
-    isToday,
-    isYesterday,
+    formatDateTimeHeader,
+    formatDateHeader,
 } from '../../utils/dates';
+import {
+    unCapitalise
+} from '../../utils/strings';
+import { deleteLog } from '../../services/log-service';
 import LogView from './LogView';
 
 
 class DayView extends React.Component {
-    renderLogs(logs) {
-        return logs.map(log => (
-            <LogView key={log.id} log={log} />
-        ));
+    async deleteLog(log) {
+        Alert.alert(
+            'Delete Log',
+            `Are you sure you want to delete this ${log.mood} log from ${unCapitalise(formatDateTimeHeader(log.time))}?`,
+            [
+                {text: 'Delete', onPress: async () => {
+                    await deleteLog(log);
+                    await this.props.fetchDay(log.time);
+                }},
+                {text: 'Cancel', onPress: () => {}, style: 'cancel'},
+            ],
+            { cancelable: false }
+        );
     }
 
-    renderDate(date) {
-        if (isToday(date)) {
-            return 'Today';
-        } else if (isYesterday(date)) {
-            return 'Yesterday';
-        }
-        return format(date, 'dddd, dS mmmm yyyy');
+    renderLogs(logs) {
+        return logs.map(log => (
+            <SwipeRow
+                key={log.id}
+                disableRightSwipe
+                rightOpenValue={-75}
+                right={
+                    <Button danger onPress={() => this.deleteLog(log)}>
+                        <Icon active name="trash" />
+                    </Button>
+                }
+                body={
+                    <View style={baseStyles.container}>
+                        <LogView log={log}/>
+                    </View>
+                }
+                style={{
+                    backgroundColor: Colors.backgroundColor,
+                    paddingBottom: 0,
+                    paddingTop: 0,
+                    marginBottom: 0,
+                    marginTop: 0,
+                    borderBottomWidth: 0,
+                }}
+            />
+        ));
     }
 
     render() {
@@ -38,13 +70,14 @@ class DayView extends React.Component {
                 <View style={[
                     baseStyles.horizontalContainer,
                     baseStyles.sideMargin,
-                    styles.dateContainer,
+                    baseStyles.largeSideMargin,
+                    baseStyles.dateContainer,
                 ]}>
-                    <H2 style={styles.dateHeader}>{this.renderDate(date)}</H2>
+                    <H2 style={baseStyles.dateHeader}>{formatDateHeader(date)}</H2>
                     <View>
-                        <Text style={styles.dateSubHeader}>Steps: {steps} </Text>
-                        { sleep ?
-                            <Text style={styles.dateSubHeader}>Sleep: {sleep.quality}</Text> :
+                        <Text style={baseStyles.dateSubHeader}>Steps: {steps} </Text>
+                        { sleep && sleep.quality ?
+                            <Text style={baseStyles.dateSubHeader}>Sleep: {sleep.quality}</Text> :
                             null
                         }
                     </View>
@@ -58,17 +91,6 @@ class DayView extends React.Component {
 const styles = StyleSheet.create({
     dayViewContainer: {
         marginBottom: 20,
-    },
-    dateContainer: {
-        justifyContent: 'space-between',
-        marginTop: 10,
-        marginBottom: 5,
-    },
-    dateHeader: {
-        color: Colors.headingTextColor,
-    },
-    dateSubHeader: {
-        color: Colors.headingTextColor,
     },
 });
 

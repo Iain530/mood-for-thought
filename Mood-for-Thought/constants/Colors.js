@@ -1,11 +1,17 @@
-const tintColor = '#2f95dc';
+const tintColor = '#404040';
+const backgroundColor = '#eee';
+
 const headingTextColor = '#666';
 const basicCardColor = '#d9d9d9';
+const lighterTextColorDark = '#555';
 const basicTextColorDark = '#444';
 const largeTextColorDark = '#333';
 const basicTextColorLight = '#eee';
 const shadowColor = '#555';
 const floatingButtonColor = '#626262';
+
+const activitySelectedColor = '#e08447';
+const activitySelectedHighlight = '#ecd6b9';
 
 const MoodColors = {
     angry: '#d9664b',
@@ -16,9 +22,13 @@ const MoodColors = {
 };
 
 export default {
+    backgroundColor,
+    activitySelectedColor,
+    activitySelectedHighlight,
     basicTextColorDark,
     basicTextColorLight,
     largeTextColorDark,
+    lighterTextColorDark,
     floatingButtonColor,
     MoodColors,
     tintColor,
