@@ -1,9 +1,12 @@
 import React from 'react';
 import { ScrollView, StyleSheet, Text } from 'react-native';
 import Expo from 'expo';
+import { getAllDays } from '../services/day-service';
 import baseStyles from '../styles/base';
+import { capitalise } from '../utils/strings';
+import Colors from '../constants/Colors';
 import { atMidnight } from '../utils/dates';
-import { VictoryBar, VictoryChart, VictoryTheme } from 'victory-native';
+import { VictoryBar, VictoryChart,VictoryPolarAxis, VictoryTheme } from 'victory-native';
 
 const data = [
     { quarter: 1, earnings: 13000 },
@@ -12,24 +15,39 @@ const data = [
     { quarter: 4, earnings: 19000 }
 ];
 
+let x = 0;
+let colors = [];
+
+
+const MOODS = Object.keys(Colors.MoodColors);
+const COLORS = Object.values(Colors.MoodColors);
+
 
 export default class StatsScreen extends React.Component {
+    static navigationOptions = {
+        title: 'Stats',
+    };
+
     constructor(props) {
         super(props);
 
         this.state = {
             pedometerIsAvailable: false,
-
+            moodData: Object.entries(Colors.MoodColors).map(([mood, color]) => {
+                colors.push(color);
+                return {
+                    x: x++,
+                    y: 0,
+                };
+            }),
         };
     }
 
 
-    static navigationOptions = {
-        title: 'Links',
-    };
+
 
     async componentDidMount() {
-        await Expo.Permissions.askAsync(Expo.Permissions.NOTIFICATIONS);
+        // await Expo.Permissions.askAsync(Expo.Permissions.NOTIFICATIONS);
         Expo.Notifications.addListener(() => alert('Received a notification (sorry)'));
         Expo.Notifications.cancelAllScheduledNotificationsAsync();
         // Expo.Notifications.scheduleLocalNotificationAsync({
@@ -39,7 +57,31 @@ export default class StatsScreen extends React.Component {
         //     time: (new Date()).getTime() + 1000,
         //     repeat: 'minute'
         // });
-        this.checkPedometer();
+        // this.checkPedometer();
+
+        this.loadData();
+    }
+
+    loadData = async () => {
+        const days = await getAllDays();
+        const counts = {};
+        days.forEach(day => {
+            day.logs.forEach(log => {
+                counts[log.mood] ? counts[log.mood]++ : counts[log.mood] = 1;
+            });
+        });
+
+        let x = 0;
+        const moodData = Object.entries(Colors.MoodColors).map(([mood, color]) => {
+            return {
+                x: x++,
+                y: counts[mood] || 0,
+            };
+        });
+
+        this.setState({
+            moodData,
+        });
     }
 
     async checkPedometer() {
@@ -56,14 +98,26 @@ export default class StatsScreen extends React.Component {
     render() {
         return (
             <ScrollView style={baseStyles.container}>
-                <Text>
-                    Steps: { this.state.pedometerIsAvailable ?
-                        this.state.steps.steps :
-                        'Pedometer not available'
+                <VictoryChart
+                    polar
+                    theme={VictoryTheme.material}
+                    animate={{ duration: 10000 }}
+                >
+                    {
+                        MOODS.map((m, i) => (
+                            <VictoryPolarAxis dependentAxis
+                                key={i}
+                                label={capitalise(m)}
+                                labelPlacement="perpendicular"
+                                style={{ tickLabels: { fill: 'none' } }}
+                                axisValue={i}
+                            />
+                        ))
                     }
-                </Text>
-                <VictoryChart width={350} theme={VictoryTheme.material}>
-                    <VictoryBar data={data} x="quarter" y="earnings" />
+                    <VictoryBar
+                        data={this.state.moodData}
+                        style={{ data: { fill: data => colors[data.x], stroke: 'black', strokeWidth: 2, }}}
+                    />
                 </VictoryChart>
             </ScrollView>
         );

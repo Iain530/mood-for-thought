@@ -2,7 +2,6 @@ import register from './storage-service';
 import { getLogs, newLog, saveLog } from './log-service';
 import stepService from './step-service';
 import {
-    createLog,
     createDay
 } from '../models';
 import format from 'dateformat';
@@ -10,7 +9,6 @@ import {
     shiftDate,
     atMidnight,
     sortByDate,
-    isToday,
 } from '../utils/dates';
 import Colors from '../constants/Colors';
 

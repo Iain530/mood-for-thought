@@ -7,7 +7,7 @@ const lighterTextColorDark = '#555';
 const basicTextColorDark = '#444';
 const largeTextColorDark = '#333';
 const basicTextColorLight = '#eee';
-const shadowColor = '#555';
+const shadowColor = '#9c9c9c';
 const floatingButtonColor = '#626262';
 
 const activitySelectedColor = '#e08447';
