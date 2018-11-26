@@ -1,7 +1,8 @@
 import React from 'react';
 import { ScrollView, StyleSheet, Text } from 'react-native';
+import { H1, H2, H3 } from 'native-base';
 import Expo from 'expo';
-import { getAllDays } from '../services/day-service';
+import { getAllDays, subscribe } from '../services/day-service';
 import baseStyles from '../styles/base';
 import { capitalise } from '../utils/strings';
 import Colors from '../constants/Colors';
@@ -58,7 +59,7 @@ export default class StatsScreen extends React.Component {
         //     repeat: 'minute'
         // });
         // this.checkPedometer();
-
+        this.listener = subscribe(() => this.loadData());
         this.loadData();
     }
 
@@ -72,7 +73,7 @@ export default class StatsScreen extends React.Component {
         });
 
         let x = 0;
-        const moodData = Object.entries(Colors.MoodColors).map(([mood, color]) => {
+        const moodData = Object.keys(Colors.MoodColors).map((mood) => {
             return {
                 x: x++,
                 y: counts[mood] || 0,
@@ -101,7 +102,6 @@ export default class StatsScreen extends React.Component {
                 <VictoryChart
                     polar
                     theme={VictoryTheme.material}
-                    animate={{ duration: 10000 }}
                 >
                     {
                         MOODS.map((m, i) => (
@@ -116,9 +116,16 @@ export default class StatsScreen extends React.Component {
                     }
                     <VictoryBar
                         data={this.state.moodData}
-                        style={{ data: { fill: data => colors[data.x], stroke: 'black', strokeWidth: 2, }}}
+                        style={{
+                            data: {
+                                fill: data => colors[data.x],
+                                stroke: 'black', strokeWidth: 2,
+                                width: 25,
+                            }
+                        }}
                     />
                 </VictoryChart>
+
             </ScrollView>
         );
     }
