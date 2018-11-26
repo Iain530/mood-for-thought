@@ -4,7 +4,7 @@ import {
     StyleSheet,
     TouchableOpacity,
 } from 'react-native';
-import { H1, H3, Text } from 'native-base';
+import { H3, Text } from 'native-base';
 import { withNavigation } from 'react-navigation';
 import MoodIcon from '../MoodIcon';
 import ActivityIcon from '../ActivityIcon';
@@ -42,14 +42,20 @@ class LogView extends React.Component {
     renderActivities(activities) {
         if (activities.length > 0) {
             return activities.map((name) => {
-                const { icon } = getActivityByName(name);
+                const { icon, displayName } = getActivityByName(name);
                 return (
-                    <View key={name} style={styles.activityListItem}>
+                    <View key={name} style={[
+                        styles.activityListItem,
+                        baseStyles.horizontalContainer
+                    ]}>
                         <ActivityIcon
                             icon={icon}
                             size="extraSmall"
                             color={Colors.basicTextColorDark}
                         />
+                        <Text style={[styles.activityListItemName, baseStyles.text]}>
+                            {capitalise(displayName ? displayName : name)}
+                        </Text>
                     </View>
                 );
             });
@@ -76,30 +82,33 @@ class LogView extends React.Component {
                     baseStyles.horizontalContainer,
                     styles.logView,
                 ]}>
-                    <View style={baseStyles.horizontalContainer}>
+                    <View style={[baseStyles.horizontalContainer]}>
                         <View style={{ marginRight: 10 }}>
                             <MoodIcon
                                 mood={mood}
                                 size="large"
                             />
                         </View>
-                        <View style={styles.logSummary}>
-                            <H3 style={[
-                                baseStyles.largeText,
-                            ]}>
-                                {capitalise(mood)}
-                            </H3>
-                            <View style={[
-                                baseStyles.horizontalContainer,
-                                styles.activityList,
-                            ]}>
-                                {this.renderActivities(activities)}
+                        <View style={{alignItems: 'stretch', flex: 1}}>
+                            <View style={[styles.logSummary, {}]}>
+                                <H3 style={[
+                                    baseStyles.largeText,
+                                ]}>
+                                    {capitalise(mood)}
+                                </H3>
+                                <View style={[
+                                    baseStyles.horizontalContainer,
+                                    styles.activityList,
+                                    {flexWrap: 'wrap'}
+                                ]}>
+                                    {this.renderActivities(activities)}
+                                </View>
                             </View>
                         </View>
+                        <Text style={[baseStyles.largeText, styles.timeStamp]}>
+                            {format(time, 'HH:MM')}
+                        </Text>
                     </View>
-                    <Text style={[baseStyles.largeText, styles.timeStamp]}>
-                        {format(time, 'HH:MM')}
-                    </Text>
                 </View>
             </TouchableOpacity>
         );
@@ -117,17 +126,25 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-start',
     },
     logSummary: {
-        alignSelf: 'flex-start',
         justifyContent: 'space-between',
     },
     cardIcon: {
         marginRight: 10,
     },
     activityList: {
-        marginTop: 3,
+        marginTop: 2,
     },
     activityListItem: {
-        padding: 2,
+        paddingLeft: 3,
+        paddingRight: 3,
+        marginRight: 5,
+        marginTop: 5,
+        borderRadius: Layout.borderRadiusSmall,
+        borderWidth: 1,
+        borderColor: Colors.basicTextColorDark,
+    },
+    activityListItemName: {
+        fontSize: 13,
     },
 });
 

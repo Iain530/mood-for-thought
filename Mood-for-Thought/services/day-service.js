@@ -2,7 +2,6 @@ import register from './storage-service';
 import { getLogs, newLog, saveLog } from './log-service';
 import stepService from './step-service';
 import {
-    createLog,
     createDay
 } from '../models';
 import format from 'dateformat';
@@ -10,7 +9,6 @@ import {
     shiftDate,
     atMidnight,
     sortByDate,
-    isToday,
 } from '../utils/dates';
 import Colors from '../constants/Colors';
 
@@ -65,7 +63,7 @@ export const getAllDays = async () => {
 
 export const saveDay = async (day) => {
     const key = format(day.date, DATE_KEY_FORMAT);
-    day.logs.sort(sortByDate('time', true))
+    day.logs.sort(sortByDate('time', true));
     day.logs = day.logs.map(log => (
         log.id
     ));
@@ -73,12 +71,33 @@ export const saveDay = async (day) => {
     if (steps > day.steps) {
         day.steps = steps;
     }
-    return storageService.setData(key, day);
+    const result = await storageService.setData(key, day);
+    notifySubscribers();
+    return result;
 };
 
 export const removeDay = async (date) => {
     const key = format(date, DATE_KEY_FORMAT);
     return storageService.removeData(key);
+};
+
+
+let i = 0;
+const listeners = {};
+
+const unsubscribe = (i) => () => {
+    delete listeners[i];
+};
+
+const notifySubscribers = async () => {
+    Object.values(listeners).forEach(callback => callback());
+};
+
+export const subscribe = (callback) => {
+    listeners[i] = callback;
+    return {
+        remove: unsubscribe(i++),
+    };
 };
 
 
