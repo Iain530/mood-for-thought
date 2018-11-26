@@ -2,6 +2,18 @@ Icons for activities.
 
 From https://oblador.github.io/react-native-vector-icons/ section 'FontAwesome5'
 
+##### Default Activities
+- mobile-alt
+- breifcase
+- shopping-cart
+- book
+- cocktail
+- coffee
+- futbol
+- car
+- bed
+
+
 ##### Chores
 - bath
 - bed

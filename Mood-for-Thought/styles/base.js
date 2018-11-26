@@ -1,6 +1,8 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
+
+export const light = mood => `${mood}Light`;
 
 const moods = Object.keys(Colors.MoodColors);
 const coloredMoods = {};
@@ -13,35 +15,90 @@ moods.forEach(mood => {
 export default StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: Colors.backgroundColor,
+    },
+    sideMargin: {
+        marginLeft: Layout.sideMargin,
+        marginRight: Layout.sideMargin,
+    },
+    largeSideMargin: {
+        marginLeft: Layout.sideMargin * 2,
+        marginRight: Layout.sideMargin * 2,
+    },
+    largeSideMarginLeft: {
+        marginLeft: Layout.sideMargin * 2,
+    },
+    fullMargin: {
+        marginLeft: Layout.sideMargin,
+        marginRight: Layout.sideMargin,
+        marginTop: Layout.topBottomMargin,
+        marginBottom: Layout.topBottomMargin,
+    },
+    largeFullMargin: {
+        marginLeft: Layout.sideMargin * 2,
+        marginRight: Layout.sideMargin * 2,
+        marginTop: Layout.topBottomMargin,
+        marginBottom: Layout.topBottomMargin,
+    },
+    headerText: {
+        color: Colors.headingTextColor,
+    },
+    italic: {
+        fontStyle: 'italic',
+    },
+    lightText: {
+        color: Colors.lighterTextColorDark,
+    },
+    smallText: {
+        color: Colors.basicTextColorDark,
+        fontSize: 12,
     },
     text: {
         color: Colors.basicTextColorDark,
-        fontSize: 14,
+    },
+    largeText: {
+        color: Colors.largeTextColorDark,
     },
     textLight: {
         color: Colors.basicTextColorLight,
     },
+    center: {
+        alignItems: 'center',
+    },
     horizontalContainer: {
-        flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
     },
     contentContainer: {
         paddingTop: 30,
     },
+    dateContainer: {
+        justifyContent: 'space-between',
+        marginTop: 10,
+        marginBottom: 5,
+    },
+    dateHeader: {
+        color: Colors.headingTextColor,
+    },
+    dateSubHeader: {
+        color: Colors.headingTextColor,
+    },
     card: {
-        flex: 1,
         padding: 10,
-        marginTop: 5,
-        marginLeft: Layout.sideMargin,
-        marginRight: Layout.sideMargin,
         backgroundColor: Colors.basicCardColor,
         borderRadius: Layout.borderRadius,
     },
-    moodIconLarge: {
-        height: 40,
-        width: 40,
-        opacity: 0.7,
+    cardNoPad: {
+        backgroundColor: Colors.basicCardColor,
+        borderRadius: Layout.borderRadius,
+    },
+    shadow: Platform.OS === 'ios' ? {
+        shadowColor: Colors.shadowColor,
+        shadowOffset: { height: 4, width: 0 },
+        shadowRadius: 3,
+        shadowOpacity: 0.75,
+    } : {
+        elevation: 4,
     },
     ...coloredMoods,
 });
