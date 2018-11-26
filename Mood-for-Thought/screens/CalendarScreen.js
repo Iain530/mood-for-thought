@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View, Text } from 'react-native';
+import { ScrollView, StyleSheet, View, Text, Dimensions } from 'react-native';
 import {
     getDay,
     getAllDays,
@@ -7,7 +7,7 @@ import {
 import baseStyles from '../styles/base';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 import { MoodColors } from '../constants/Colors';
-
+import { Svg } from 'expo';
 
 export default class CalendarScreen extends React.Component {
     constructor(props) {
@@ -75,12 +75,13 @@ export default class CalendarScreen extends React.Component {
 
         let markedDates = {};
         allDays.forEach((day) => {
+          let mostCommonMood = this.mostCommonElement(day.logs.map((log) => log.mood));
           markedDates = {
             ...markedDates,
             [day.date.substring(0,10)]: {
               customStyles: {
                 container: {
-                  backgroundColor: MoodColors[this.mostCommonElement(day.logs.map((log) => log.mood))],
+                  backgroundColor: MoodColors[mostCommonMood],
                   borderRadius: 10,
                   width: 48,
                 },
@@ -93,6 +94,41 @@ export default class CalendarScreen extends React.Component {
           };
         });
 
+        const moodTimelineWidth = Dimensions.get('window').width;
+
+        var mostCommonMood;
+        var moodTimelineColor;
+
+        // console.log(day);
+
+        { day ?
+          mostCommonMood = this.mostCommonElement(day.logs.map((log) => log.mood)) :
+          mostCommonMood = null
+        }
+
+        { mostCommonMood ?
+          moodTimelineColor = MoodColors[mostCommonMood] :
+          moodTimelineColor = "#fff"
+        }
+
+        // console.log(moodTimelineColor);
+
+        let markedTimes = {};
+
+        if (day) {
+          day.logs.forEach((log) => {
+            markedTimes = {
+              ...markedTimes,
+              [log.time.substring(11,16)]: {
+                color: MoodColors[log.mood]
+              }
+            };
+          });
+          console.log(day.logs);
+        }
+
+        console.log(markedTimes);
+
         return (
             <ScrollView style={baseStyles.container}>
               <CalendarList
@@ -102,24 +138,20 @@ export default class CalendarScreen extends React.Component {
                 firstDay={1}
                 disableMonthChange={false}
                 onDayPress={(day) => {this.updateDetails(new Date(day.dateString))}}
-                onPressArrowLeft={substractMonth => substractMonth()}
-                onPressArrowRight={addMonth => addMonth()}
+                scrollEnabled={true}
 
                 markingType={'custom'}
                 markedDates={markedDates}
               />
-              <View style={styles.getStartedContainer}>
-                    { day ?
-                      <Text style={styles.getStartedText}>{day.date}</Text> :
-                      <Text style={styles.getStartedText}>No data to display for this day.</Text>
-                    }
-                    { day ?
-                      <Text style={styles.getStartedText}>
-                        {moods.map(mood => mood.toString())}
-                      </Text> :
-                      <Text style={styles.getStartedText}>No data to display for this day.</Text>
-                    }
-              </View>
+              <Svg height={100} width={moodTimelineWidth}>
+                <Svg.Rect
+                  x={15}
+                  y={15}
+                  width={moodTimelineWidth - 30}
+                  height={50}
+                  fill={moodTimelineColor}
+                />
+              </Svg>
             </ScrollView>
         );
     }

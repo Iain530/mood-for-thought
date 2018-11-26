@@ -4,7 +4,7 @@ const basicCardColor = '#d9d9d9';
 const basicTextColorDark = '#444';
 const basicTextColorLight = '#eee';
 
-const MoodColors = {
+export const MoodColors = {
     joy: '#e2c475',
     content: '#73b877',
     anger: '#d9664b',
