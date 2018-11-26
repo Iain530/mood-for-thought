@@ -4,7 +4,7 @@ import {
     View,
     Alert,
 } from 'react-native';
-import { H3, Text, SwipeRow, Button, Icon } from 'native-base';
+import { H2, Text, SwipeRow, Button, Icon } from 'native-base';
 import baseStyles from '../../styles/base';
 import Colors from '../../constants/Colors';
 import {
@@ -73,7 +73,7 @@ class DayView extends React.Component {
                     baseStyles.largeSideMargin,
                     baseStyles.dateContainer,
                 ]}>
-                    <H3 style={baseStyles.dateHeader}>{formatDateHeader(date)}</H3>
+                    <H2 style={baseStyles.dateHeader}>{formatDateHeader(date)}</H2>
                     <View>
                         <Text style={baseStyles.dateSubHeader}>Steps: {steps} </Text>
                         { sleep && sleep.quality ?
