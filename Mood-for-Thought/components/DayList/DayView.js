@@ -19,6 +19,23 @@ import LogView from './LogView';
 
 
 class DayView extends React.Component {
+
+    sleepEqual(s1, s2) {
+        if (s1 !== null && s2 !== null) {
+            return s1.quality === s2.quality;
+        }
+        return s1 === s2;
+    }
+
+    shouldComponentUpdate(nextProps) {
+        const { logs, steps, sleep, date } = this.props.day;
+        const nextDay = nextProps.day;
+        return logs.length !== nextDay.logs.length ||
+               steps !== nextDay.steps ||
+               date.getTime() !== nextDay.date.getTime() ||
+               !this.sleepEqual(sleep, nextDay.sleep);
+    }
+
     async deleteLog(log) {
         Alert.alert(
             'Delete Log',
@@ -33,6 +50,7 @@ class DayView extends React.Component {
             { cancelable: false }
         );
     }
+
 
     renderLogs(logs) {
         return logs.map(log => (

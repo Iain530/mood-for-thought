@@ -87,7 +87,10 @@ export const createFakeData = async (days) => {
     for (let i = 1; i < days; i++) {
         const date = shiftDate(atMidnight(new Date()), -i);
         const day = await createDay(date);
-        day.sleep.quality = Math.floor(Math.random() * 4);
+        day.sleep.quality = Math.floor(Math.random() * 3);
+        if (day.steps === 0) {
+            day.steps = Math.floor(Math.random() * 4000 + 2000);
+        }
         await saveDay(day);
         await createFakeLogs(date);
     }
