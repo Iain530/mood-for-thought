@@ -11,14 +11,14 @@ import {
 const isPedometerAvailable = async () => Pedometer.isAvailableAsync();
 
 const getStepsForDate = async (date) => {
-    // if (await isPedometerAvailable()) {
-    //     const start = atMidnight(date);
-    //     const end = shiftDate(start, 1);
-    //     const result = await Pedometer.getStepCountAsync(start, end);
-    //     if (result) {
-    //         return result.steps;
-    //     }
-    // }
+    if (await isPedometerAvailable()) {
+        const start = atMidnight(date);
+        const end = shiftDate(start, 1);
+        const result = await Pedometer.getStepCountAsync(start, end);
+        if (result) {
+            return result.steps;
+        }
+    }
     return null;
 };
 
