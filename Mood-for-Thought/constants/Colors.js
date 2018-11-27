@@ -21,6 +21,15 @@ const MoodColors = {
     meh: '#bd87dd',
 };
 
+const opacity = 0.3;
+const MoodColorsTransparent = {
+    angry: `rgba(217, 102, 75, ${opacity})`,
+    joyful: `rgba(227, 214, 128, ${opacity})`,
+    content: `rgba(115, 184, 119, ${opacity})`,
+    sad: `rgba(110, 168, 200, ${opacity})`,
+    meh: `rgba(189, 135, 221, ${opacity})`,
+};
+
 export default {
     backgroundColor,
     activitySelectedColor,
@@ -31,6 +40,7 @@ export default {
     lighterTextColorDark,
     floatingButtonColor,
     MoodColors,
+    MoodColorsTransparent,
     tintColor,
     headingTextColor,
     basicCardColor,
