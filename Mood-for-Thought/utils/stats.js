@@ -53,3 +53,5 @@ export const getCounts = (arr) => arr.reduce((cnts, v) => {
     cnts[v] ? cnts[v]++ : cnts[v] = 1;
     return cnts;
 }, {});
+
+export const sum = (arr) => arr.reduce((s, e) => s + e, 0);

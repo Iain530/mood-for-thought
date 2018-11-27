@@ -51,8 +51,8 @@ export default class LogScreen extends React.Component {
     }
 
     fetchAllDays = async () => {
-        // AsyncStorage.clear();
-        // await createFakeData(90);
+        AsyncStorage.clear();
+        await createFakeData(90);
 
         const days = await getAllDays();
 

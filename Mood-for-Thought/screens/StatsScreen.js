@@ -7,7 +7,7 @@ import baseStyles from '../styles/base';
 import { capitalise } from '../utils/strings';
 import Colors from '../constants/Colors';
 import { atMidnight } from '../utils/dates';
-import { standardDeviation, average, percentile, getBuckets, getCounts, range } from '../utils/stats';
+import { standardDeviation, average, percentile, getBuckets, getCounts, range, sum } from '../utils/stats';
 import MoodIcon from '../components/MoodIcon';
 import {
     VictoryBar,
@@ -19,6 +19,8 @@ import {
     VictoryLabel,
     VictoryAxis,
     VictoryStack,
+    VictoryArea,
+    VictoryGroup,
 } from 'victory-native';
 
 
@@ -49,6 +51,7 @@ export default class StatsScreen extends React.Component {
                 { y: i+1, x: [0] }
             )),
             averageDailyMood: createMoodObject(() => emptyDataArray(7)),
+            sleepQualityData: createMoodObject(() => emptyDataArray(5)),
         };
     }
 
@@ -93,12 +96,18 @@ export default class StatsScreen extends React.Component {
         });
 
         const moodSteps = createMoodObject(() => []);
+        const moodSleepQuality = createMoodObject(() => []);
 
         days.forEach(day => {
             const seenToday = createMoodObject(() => false);
             day.logs.forEach(({ mood }) => {
                 if (!seenToday[mood]) {
-                    moodSteps[mood].push(day.steps);
+                    if (day.steps > 0) {
+                        moodSteps[mood].push(day.steps);
+                    }
+                    if (day.sleep) {
+                        moodSleepQuality[mood].push(day.sleep.quality);
+                    }
                     seenToday[mood] = true;
                 }
             });
@@ -107,7 +116,6 @@ export default class StatsScreen extends React.Component {
         const moodStepData = [];
         let y = 1;
         Object.entries(moodSteps).map(([mood, allSteps]) => {
-            console.log(mood, Math.min(...allSteps));
             if (allSteps.length > 0) {
                 allSteps.sort();
                 moodStepData.push({
@@ -135,11 +143,27 @@ export default class StatsScreen extends React.Component {
             });
         }
 
+        const moodQualityCounts = createMoodObject(() => ({}));
+        MOODS.forEach(mood => moodQualityCounts[mood] = getCounts(moodSleepQuality[mood]));
+
+        const sleepQualityData = createMoodObject(() => emptyDataArray(3));
+        for (let i = 0; i < 3; i++) {
+            const total = MOODS.reduce((sum, mood) => sum + (moodQualityCounts[mood][i] ? moodQualityCounts[mood][i] : 0), 0);
+            MOODS.forEach(mood => {
+                const count = moodQualityCounts[mood][i] ? moodQualityCounts[mood][i] : 0;
+                if (total > 0) {
+                    sleepQualityData[mood][i].y = count / total * 100;
+                } else {
+                    sleepQualityData[mood][i].y = 20;
+                }
+            });
+        }
 
         this.setState({
             moodCountData,
             moodStepData,
             averageDailyMood,
+            sleepQualityData,
         });
     }
 
@@ -201,7 +225,9 @@ export default class StatsScreen extends React.Component {
                         <VictoryPolarAxis
                             style={{
                                 tickLabels: { fill: 'none' },
+                                axis: { stroke: 'none' }
                             }}
+                            invertAxis
                         />
                         {
                             MOODS.map((m, i) => (
@@ -211,9 +237,6 @@ export default class StatsScreen extends React.Component {
                                     labelPlacement="perpendicular"
                                     style={{
                                         tickLabels: { fill: 'none' },
-                                        axis: {
-                                            stroke: 'none',
-                                        }
                                     }}
                                     axisValue={i}
                                 />
@@ -225,7 +248,7 @@ export default class StatsScreen extends React.Component {
                                 data: {
                                     fill: data => COLORS[data.x],
                                     stroke: 'black', strokeWidth: 1.5,
-                                    width: 50,
+                                    width: 10,
                                 }
                             }}
                         />
@@ -281,6 +304,7 @@ export default class StatsScreen extends React.Component {
                     </VictoryChart>
                 </View>
 
+
                 <View style={[
                     baseStyles.card,
                     baseStyles.largeSideMargin,
@@ -289,7 +313,7 @@ export default class StatsScreen extends React.Component {
                 ]}>
                     <H1 style={baseStyles.headerText}>Steps</H1>
                     <Text style={baseStyles.text}>
-                        Your mood based on your average steps in a day
+                        Your mood based on your steps in a day
                     </Text>
 
                     <VictoryChart
@@ -297,7 +321,17 @@ export default class StatsScreen extends React.Component {
                         theme={VictoryTheme.material}
                         animate
                     >
-                        <VictoryAxis />
+                        <VictoryAxis minDomain={{ x: -1 }} />
+                        <VictoryAxis
+                            dependentAxis
+                            invertAxis
+                            style={{
+                                axis: { stroke: 'none' },
+                                tickLabels: { fill: 'none' },
+                                ticks: { stroke: 'none' },
+                                grid: { stroke: 'none' },
+                            }}
+                        />
                         <VictoryBoxPlot
                             data={this.state.moodStepData}
                             horizontal
@@ -307,14 +341,56 @@ export default class StatsScreen extends React.Component {
                                 median: { stroke: 'black', strokeWidth: 2 },
                                 q1: {
                                     fill: data => COLORS[data._y-1],
-                                    stroke: 'black', strokeWidth: 1.5,
+                                    stroke: 'black', strokeWidth: 2,
                                 },
                                 q3: {
                                     fill: data => COLORS[data._y-1],
-                                    stroke: 'black', strokeWidth: 1.5,
+                                    stroke: 'black', strokeWidth: 2,
                                 }
                             }}
                             barRatio={1.0}
+                        />
+                    </VictoryChart>
+                </View>
+
+                <View style={[
+                    baseStyles.card,
+                    baseStyles.largeSideMargin,
+                    styles.stats,
+                    baseStyles.shadow,
+                ]}>
+                    <H1 style={baseStyles.headerText}>Sleep</H1>
+                    <Text style={baseStyles.text}>
+                        Your mood based on your sleep quality
+                    </Text>
+
+                    <VictoryChart
+                        theme={VictoryTheme.material}
+                        domainPadding={{ x: [30, 0] }}
+                    >
+                        <VictoryGroup
+                            colorScale={COLORS}
+                            offset={30}
+                        >
+                            {
+                                MOODS.map(mood => (
+                                    <VictoryBar
+                                        key={mood}
+                                        data={this.state.sleepQualityData[mood]}
+                                        style={{
+
+                                        }}
+                                    />
+                                ))
+                            }
+                        </VictoryGroup>
+                        <VictoryAxis
+                            tickValues={[0, 1, 2, 3]}
+                            tickFormat={(i) => ['Bad', 'Average', 'Good'][i]}
+                        />
+                        <VictoryAxis
+                            tickFormat={(i) => `${i}%`}
+                            dependentAxis
                         />
                     </VictoryChart>
                 </View>
