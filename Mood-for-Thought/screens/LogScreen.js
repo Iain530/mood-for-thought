@@ -99,12 +99,6 @@ export default class LogScreen extends React.Component {
         const days = Object.values(this.state.days);
         days.sort(sortByDate('date'));
 
-        // <FloatingAction
-        //     actions={actions}
-        //     color={Colors.floatingButtonColor}
-        //     onPressItem={(name) => this.createLog(name)}
-        // />
-
         return (
             <View style={baseStyles.container}>
                 <ScrollView style={baseStyles.container} contentContainerStyle={styles.contentContainer}>

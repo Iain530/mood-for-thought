@@ -68,7 +68,9 @@ CalendarStack.navigationOptions = {
 };
 
 export default createBottomTabNavigator({
+    StatsStack,
     LogStack,
+    ActivityStack,
     CalendarStack,
     StatsStack,
     ActivityStack,
