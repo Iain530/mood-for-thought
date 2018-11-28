@@ -107,9 +107,9 @@ export default class LogScreen extends React.Component {
                         {
                             days.length > 0 ?
                                 <DayList days={days} fetchDay={this.fetchDay}/>
-                                : <ActivityIndicator style={{paddingTop:20}} size="large" color="#0000ff" />
+                                : <ActivityIndicator style={{paddingTop:20}} size="large" color={Colors.floatingButtonColor} />
                         }
-                        
+
                     </View>
                 </ScrollView>
 

@@ -180,29 +180,46 @@ export default class StatsScreen extends React.Component {
 
     render() {
         return (
-            <ScrollView style={baseStyles.container}>
+            <ScrollView
+                style={baseStyles.container}
+                stickyHeaderIndices={[0]}
+            >
 
-                <View style={[
-                    baseStyles.horizontalContainer,
-                    baseStyles.card,
-                    baseStyles.largeSideMargin,
-                    baseStyles.center,
-                    styles.moods
-                ]}>
-                    {
-                        MOODS.map(mood => (
-                            <View
-                                style={baseStyles.center}
-                                key={mood}
-                            >
-                                <MoodIcon
-                                    mood={mood}
-                                    size="large"
-                                />
-                                <Text style={[baseStyles.text, styles.moodName]}>{capitalise(mood)}</Text>
-                            </View>
-                        ))
-                    }
+                <View
+                    style={{
+                        marginTop: 20,
+                    }}
+                >
+
+                    <View style={[
+                        baseStyles.card,
+                        baseStyles.sideMargin,
+                        baseStyles.shadow,
+                        { backgroundColor: '#e4e4e4' },
+                        styles.moods
+                    ]}>
+                        <H3 style={[baseStyles.headerText, { alignSelf: 'center', paddingBottom: 5, }]}>Legend</H3>
+                        <View style={[
+                            baseStyles.horizontalContainer,
+                            baseStyles.center,
+                            { justifyContent: 'space-around' }
+                        ]}>
+                            {
+                                MOODS.map(mood => (
+                                    <View
+                                        style={baseStyles.center}
+                                        key={mood}
+                                    >
+                                        <MoodIcon
+                                            mood={mood}
+                                            size="large"
+                                        />
+                                        <Text style={[baseStyles.text, styles.moodName]}>{capitalise(mood)}</Text>
+                                    </View>
+                                ))
+                            }
+                        </View>
+                    </View>
                 </View>
 
 
@@ -414,13 +431,12 @@ export default class StatsScreen extends React.Component {
 const styles = StyleSheet.create({
     stats: {
         backgroundColor: '#fefefe',
-        marginTop: 0,
         marginBottom: 15,
         alignItems: 'center',
     },
     moods: {
-        marginTop: 15,
+        paddingTop: 20,
+        marginTop: -10,
         marginBottom: 15,
-        justifyContent: 'space-around',
     }
 });
