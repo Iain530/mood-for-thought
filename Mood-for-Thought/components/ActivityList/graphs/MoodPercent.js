@@ -58,14 +58,12 @@ class MoodPercent extends React.Component {
                 >
                 {
                     moods.map((mood, i) => (
-                        (this.props.moodCounter[mood] > 0) ? 
-                            <VictoryBar
-                                key={i}
-                                data={[{x: mood.charAt(0).toUpperCase()+mood.slice(1), y: this.props.moodCounter[mood]}]}
-                                barRatio={7}
-                                range={this.state.total}
-                            />
-                            : null
+                        <VictoryBar
+                            key={i}
+                            data={[{x: mood.charAt(0).toUpperCase()+mood.slice(1), y: this.props.moodCounter[mood]}]}
+                            barRatio={7}
+                            range={this.state.total}
+                        />
                     ))
                 }
                 </VictoryStack>
