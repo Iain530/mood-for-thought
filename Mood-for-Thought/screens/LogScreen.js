@@ -5,6 +5,7 @@ import {
     View,
     AsyncStorage,
     Icon,
+    ActivityIndicator,
 } from 'react-native';
 import ActionButton from 'react-native-circular-action-menu';
 import { H3, Text } from 'native-base';
@@ -103,7 +104,12 @@ export default class LogScreen extends React.Component {
             <View style={baseStyles.container}>
                 <ScrollView style={baseStyles.container} contentContainerStyle={styles.contentContainer}>
                     <View>
-                        <DayList days={days} fetchDay={this.fetchDay}/>
+                        {
+                            days.length > 0 ?
+                                <DayList days={days} fetchDay={this.fetchDay}/>
+                                : <ActivityIndicator style={{paddingTop:20}} size="large" color="#0000ff" />
+                        }
+                        
                     </View>
                 </ScrollView>
 

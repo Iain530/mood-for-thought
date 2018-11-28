@@ -114,7 +114,7 @@ class ActivityList extends React.Component {
                         }
                          
                     </View>
-                    : <View><ActivityIndicator size="large" color="#0000ff" /></View>
+                    : <View><ActivityIndicator style={{paddingTop:20}} size="large" color="#0000ff" /></View>
                     
                 }
 

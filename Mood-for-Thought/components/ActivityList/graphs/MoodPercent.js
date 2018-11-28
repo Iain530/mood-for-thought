@@ -62,6 +62,7 @@ class MoodPercent extends React.Component {
                             key={i}
                             data={[{x: mood.charAt(0).toUpperCase()+mood.slice(1), y: this.props.moodCounter[mood]}]}
                             barRatio={7}
+                            labels={[mood.charAt(0).toUpperCase()+mood.slice(1)]}
                         />
                     ))
                 }
