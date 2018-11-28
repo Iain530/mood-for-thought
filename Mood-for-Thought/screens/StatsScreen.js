@@ -368,6 +368,7 @@ export default class StatsScreen extends React.Component {
                     baseStyles.largeSideMargin,
                     styles.stats,
                     baseStyles.shadow,
+                    { paddingLeft: 30 }
                 ]}>
                     <H1 style={baseStyles.headerText}>Sleep</H1>
                     <Text style={baseStyles.text}>
@@ -376,7 +377,6 @@ export default class StatsScreen extends React.Component {
 
                     <VictoryChart
                         theme={VictoryTheme.material}
-                        domainPadding={{ x: [30, 0] }}
                     >
                         {
                             MOODS.map(mood => (
