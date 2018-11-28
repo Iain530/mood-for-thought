@@ -62,7 +62,6 @@ class MoodPercent extends React.Component {
                             key={i}
                             data={[{x: mood.charAt(0).toUpperCase()+mood.slice(1), y: this.props.moodCounter[mood]}]}
                             barRatio={7}
-                            range={this.state.total}
                         />
                     ))
                 }
@@ -71,7 +70,7 @@ class MoodPercent extends React.Component {
                     {
                         moods.map((mood, i) => (
                             (this.props.moodCounter[mood] > 0) ? 
-                                <View style={[styles.percent]} key={i}>
+                                <View style={[]} key={i}>
                                     <H2 >{mood.charAt(0).toUpperCase()+mood.slice(1)}</H2>
                                     <H2>{Math.round((this.props.moodCounter[mood]/this.state.total)*100)}%</H2>
                                 </View>
