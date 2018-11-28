@@ -11,6 +11,7 @@ import {
     sortByDate,
 } from '../utils/dates';
 import Colors from '../constants/Colors';
+import activities from '../constants/Activities';
 
 const DAY_PREFIX = 'Day';
 const DATE_KEY_FORMAT = 'dd/mm/yy';
@@ -123,6 +124,15 @@ const createFakeLogs = async (date) => {
     for (let i = 0; i < numLogs; i++) {
         const log = await newLog(date);
         log.mood = emotions[Math.floor(Math.random() * 5)];
+
+        let numActivities = Math.ceil(Math.random() * 10)
+        for (let j = 0; j < numActivities; j++) {
+            let activityIndex = Math.floor(Math.random() * 10);
+            (log.activities.indexOf(activities[activityIndex]["name"]) === -1)
+                ? log.activities.push(activities[activityIndex]["name"])
+                : null;
+        }
+        
         await saveLog(log);
     }
 };
