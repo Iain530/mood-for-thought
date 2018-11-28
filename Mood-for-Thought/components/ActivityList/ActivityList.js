@@ -1,6 +1,7 @@
 import React from 'react';
 import {
     View,
+    ActivityIndicator,
     Text,
     StyleSheet
 } from 'react-native';
@@ -39,7 +40,6 @@ class ActivityList extends React.Component {
     }
 
     componentDidMount() {
-        console.log("Mounted");
         this.getAllData();
         
     }
@@ -114,7 +114,7 @@ class ActivityList extends React.Component {
                         }
                          
                     </View>
-                    : <View/>
+                    : <View><ActivityIndicator size="large" color="#0000ff" /></View>
                     
                 }
 
