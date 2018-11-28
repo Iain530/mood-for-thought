@@ -228,9 +228,19 @@ export default class StatsScreen extends React.Component {
                                 axis: { stroke: 'none' }
                             }}
                             invertAxis
+                            labelPlacement="perpendicular"
+                        />
+                        <VictoryPolarAxis dependentAxis
+                            label="Angry"
+                            labelPlacement="perpendicular"
+                            style={{
+                                tickLabels: { fill: 'none' },
+                                axisLabel: { angle: 90 }
+                            }}
+                            axisValue={0}
                         />
                         {
-                            MOODS.map((m, i) => (
+                            MOODS.map((m, i) => i > 0 ? (
                                 <VictoryPolarAxis dependentAxis
                                     key={i}
                                     label={capitalise(m)}
@@ -240,7 +250,7 @@ export default class StatsScreen extends React.Component {
                                     }}
                                     axisValue={i}
                                 />
-                            ))
+                            ) : null)
                         }
                         <VictoryBar
                             data={this.state.moodCountData}
@@ -368,24 +378,24 @@ export default class StatsScreen extends React.Component {
                         theme={VictoryTheme.material}
                         domainPadding={{ x: [30, 0] }}
                     >
-                        <VictoryGroup
-                            colorScale={COLORS}
-                            offset={30}
-                        >
-                            {
-                                MOODS.map(mood => (
-                                    <VictoryBar
-                                        key={mood}
-                                        data={this.state.sleepQualityData[mood]}
-                                        style={{
+                        {
+                            MOODS.map(mood => (
+                                <VictoryLine
+                                    key={mood}
+                                    interpolation="basis"
+                                    data={this.state.sleepQualityData[mood]}
+                                    style={{
+                                        data: {
+                                            stroke: Colors.MoodColors[mood],
+                                            strokeWidth: 3,
+                                        }
+                                    }}
+                                />
+                            ))
+                        }
 
-                                        }}
-                                    />
-                                ))
-                            }
-                        </VictoryGroup>
                         <VictoryAxis
-                            tickValues={[0, 1, 2, 3]}
+                            tickValues={[0, 1, 2]}
                             tickFormat={(i) => ['Bad', 'Average', 'Good'][i]}
                         />
                         <VictoryAxis
