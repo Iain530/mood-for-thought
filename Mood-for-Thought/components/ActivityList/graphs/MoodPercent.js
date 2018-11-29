@@ -16,6 +16,7 @@ import {
 } from 'victory-native';
 import Colors from '../../../constants/Colors';
 import baseStyles from '../../../styles/base';
+import { capitalise } from '../../../utils/strings';
 
 
 class MoodPercent extends React.Component {
@@ -63,26 +64,13 @@ class MoodPercent extends React.Component {
                             key={i}
                             data={[{x: mood.charAt(0).toUpperCase()+mood.slice(1), y: this.props.moodCounter[mood]}]}
                             barRatio={7}
-                            labels={[mood.charAt(0).toUpperCase()+mood.slice(1)]}
-                            labelComponent={<VictoryLabel dy={40} dx={-60} >{Math.round((this.props.moodCounter[mood]/this.state.total)*100)}% </VictoryLabel>}
-                            range={[0, this.state.total]}
+                            labels={[capitalise(mood) + " " + Math.round((this.props.moodCounter[mood]/this.state.total)*100) + "%"]}
+                            labelComponent={<VictoryLabel dy={40} dx={-60}/>}
 
                         />
                     ))
                 }
                 </VictoryStack>
-                <View style={[]}>
-                    {
-                        moods.map((mood, i) => (
-                            (this.props.moodCounter[mood] > 0) ?
-                                <View style={[]} key={i}>
-                                    <H2 >{mood.charAt(0).toUpperCase()+mood.slice(1)}</H2>
-                                    <H2>{Math.round((this.props.moodCounter[mood]/this.state.total)*100)}%</H2>
-                                </View>
-                                : null
-                        ))
-                    }
-                </View>
 
             </View>
         );
