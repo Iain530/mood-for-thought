@@ -64,7 +64,7 @@ class MoodPercent extends React.Component {
                             data={[{x: mood.charAt(0).toUpperCase()+mood.slice(1), y: this.props.moodCounter[mood]}]}
                             barRatio={7}
                             labels={[mood.charAt(0).toUpperCase()+mood.slice(1)]}
-                            labelComponent={<VictoryLabel dy={40} dx={-60} >{Math.round((this.props.moodCounter[mood]/this.state.total)*100)}% </VictoryLabel>}
+                            labelComponent={<VictoryLabel dy={35} dx={-60} >{Math.round((this.props.moodCounter[mood]/this.state.total)*100)}% </VictoryLabel>}
                             range={[0, this.state.total]}
 
                         />

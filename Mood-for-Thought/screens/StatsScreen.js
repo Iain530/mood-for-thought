@@ -393,30 +393,55 @@ export default class StatsScreen extends React.Component {
 
                     <VictoryChart
                         theme={VictoryTheme.material}
-                        domainPadding={{ x: [30, 0] }}
                     >
-                        {
-                            MOODS.map(mood => (
-                                <VictoryLine
-                                    key={mood}
-                                    interpolation="basis"
-                                    data={this.state.sleepQualityData[mood]}
-                                    style={{
-                                        data: {
-                                            stroke: Colors.MoodColors[mood],
-                                            strokeWidth: 3,
+                        <VictoryStack
+                            colorScale={COLORS}
+                            minDomain={{ x: 0.5 }}
+                            maxDomain={{ x: 3.5 }}
+                        >
+                            {
+                                MOODS.map(mood => (
+                                    <VictoryBar
+                                        key={mood}
+                                        interpolation="basis"
+                                        
+                                        barRatio={0.9}
+                                        labelComponent={
+                                            <VictoryLabel
+                                                dy={16}
+                                                textAnchor="middle"
+                                                verticalAnchor="middle"
+                                                renderInPortal={true}
+                                            />
                                         }
-                                    }}
-                                />
-                            ))
-                        }
+                                        data={this.state.sleepQualityData[mood].map(d => ({x: d.x + 1, y: d.y}))}
+                                        style={{
+                                            data: {
+                                                fill: Colors.MoodColors[mood],
+                                                stroke: 'black',
+                                                strokeWidth: 2,
+                                            }
+                                        }}
+                                    />
+                                ))
+                            }
+                        </VictoryStack>
 
                         <VictoryAxis
-                            tickValues={[0, 1, 2]}
-                            tickFormat={(i) => ['Bad', 'Average', 'Good'][i]}
+                            tickValues={[1, 2, 3]}
+                            tickFormat={(i) => i >= 0 ? ['Bad', 'Average', 'Good'][i-1] : ''}
+                            style={{
+                                grid: { stroke: 'none' }
+                            }}
                         />
                         <VictoryAxis
-                            tickFormat={(i) => `${i}%`}
+                            style={{
+                                grid: { stroke: 'none' },
+                                axis: { stroke: 'none' },
+                                ticks: { stroke: 'none' },
+                                tickLabels: { fill: 'none' },
+                            }}
+                            label="Mood (%)"
                             dependentAxis
                         />
                     </VictoryChart>
