@@ -27,7 +27,6 @@ const restoreDay = async (day) => {
     return day;
 };
 
-
 export const getOrCreate = async (date) => {
     const day = await getDay(date);
     if (day !== null) {
@@ -122,7 +121,8 @@ const emotions = Object.keys(Colors.MoodColors);
 const createFakeLogs = async (date) => {
     const numLogs = Math.ceil(Math.random() * 3);
     for (let i = 0; i < numLogs; i++) {
-        const log = await newLog(date);
+        const time = new Date(date).setHours(Math.floor(Math.random() * (24)));
+        const log = await newLog(time);
         log.mood = emotions[Math.floor(Math.random() * 5)];
 
         let numActivities = Math.ceil(Math.random() * 10)
@@ -132,7 +132,7 @@ const createFakeLogs = async (date) => {
                 ? log.activities.push(activities[activityIndex]["name"])
                 : null;
         }
-        
+
         await saveLog(log);
     }
 };
